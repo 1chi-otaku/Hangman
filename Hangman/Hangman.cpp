@@ -1,4 +1,5 @@
 #include "Hangman.h"
+#include <stack>
 #include <fstream>
 
 Hangman::Hangman() {
@@ -141,25 +142,98 @@ void Hangman::PrintHangman()
 void Hangman::PrintWord()
 {
 	enter(1);
-	shift(6);
+	shift(5);
+	cout << "        ";
+	bool iss = false;
+	int j = 0;
 	for (int i = 0; i < Word.size(); i++)
 	{
 		
-		cout << " - ";
+		iss = false;
+		for (j = 0; j < Guessed.size(); j++)
+		{
+			if (Word[i] == Guessed[j]) {
+				iss = true;
+				break;
+			}
+
+		}
+		if (iss) {
+			cout << " " << Guessed[j] << " ";
+		}
+		else {
+			cout << " _ ";
+		}
+		j = 0;
+		
+		
 	}
+
 	cout << endl;
 }
 
 void Hangman::Play()
 {
-	char current_guess;
-	while (lives != 0)
+	bool isGuessed = false;
+	stack<char> guess;
+	string current_guess;
+	while (lives != 0 && isGuessed != true)
 	{
 		system("cls");
+
 		PrintHangman();
 		PrintWord();
+		bool isRepeat = false;
+		cout << "Enter a letter or a word to guess: ";
 		cin >> current_guess;
-		system("pause");
+
+
+		for (int i = 0; i < Guessed.size(); i++)
+		{
+			if (current_guess[0] == Guessed[i]) {
+				lives--;
+				isRepeat = true;
+				break;
+			}
+		}
+
+		if (current_guess.size() == Word.size()) {
+
+			if (Word == current_guess) {
+				Guessed = Word;
+				isGuessed = true;
+				system("cls");
+				PrintHangman();
+				PrintWord();
+				cout << "\nYOU WON!";
+				system("pause");
+			}
+			else {
+				lives--;
+			}
+		}
+		else if (current_guess.size() == 1 && isRepeat != true) {
+			bool temp = false;
+			for (int i = 0; i < Word.size(); i++)
+			{
+				if (Word[i] == current_guess[0]) {
+					Guessed += current_guess;
+					temp = true;
+					break;
+				}
+				
+			}
+			if (temp == false)lives--;
+		}
+		else {
+			cout << "Wrong input";
+		}
+		
+		cout << Word << endl;
+		cout << Guessed.size() << endl;
+		cout << Guessed << endl;
+
+
 	}
 	
 }
