@@ -129,11 +129,9 @@
   <ItemGroup>
     <ClCompile Include="Hangman.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="word.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hangman.h" />
-    <ClInclude Include="word.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
