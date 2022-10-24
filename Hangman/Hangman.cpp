@@ -154,16 +154,16 @@ void Hangman::PrintHangman()
 	
 }
 
-void Hangman::PrintWord()
+bool Hangman::PrintWord()
 {
 	enter(1);
 	shift(5);
 	cout << "        ";
 	bool iss = false;
+	bool notfull = true;
 	int j = 0;
 	for (int i = 0; i < Word.size(); i++)
 	{
-		
 		iss = false;
 		for (j = 0; j < Guessed.size(); j++)
 		{
@@ -177,6 +177,7 @@ void Hangman::PrintWord()
 			cout << " " << Guessed[j] << " ";
 		}
 		else {
+			notfull = false;
 			cout << " _ ";
 		}
 		j = 0;
@@ -184,6 +185,7 @@ void Hangman::PrintWord()
 		
 	}
 	cout << endl;
+	return notfull;
 }
 
 void Hangman::PrintTried()
@@ -386,6 +388,22 @@ void Hangman::Play()
 	auto t_start = std::chrono::high_resolution_clock::now();
 	while (lives != 0 && isGuessed != true)
 	{ 
+		if (PrintWord()) {
+			system("cls");
+			Guessed = Word;
+			isGuessed = true;
+			PrintHangman();
+			PrintWord();
+			shift(5);
+			cout << "YOU WIN!" << endl;
+			auto t_end = std::chrono::high_resolution_clock::now();
+			elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
+			shift(5);
+			system("pause");
+			break;
+		}
+
+
 		system("cls");
 		PrintHangman();
 		PrintWord();
@@ -395,6 +413,8 @@ void Hangman::Play()
 		message = "";
 		cout << "Enter a letter or a word to guess: ";
 		cin >> current_guess;
+
+		
 		
 		if (Word == current_guess) {
 			Guessed = Word;

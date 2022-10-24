@@ -22,7 +22,7 @@ public:
 	Hangman();
 	Hangman(string word);
 	void PrintHangman();
-	void PrintWord();
+	bool PrintWord();
 	void PrintTried();
 	void PrintTime(int time_in_seconds);
 	void CalculatePoint(int time_in_seconds);
