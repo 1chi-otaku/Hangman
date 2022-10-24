@@ -17,7 +17,14 @@ void Hangman::PrintHangman()
 	switch (lives)
 	{
 	case 6:
-		enter(6);
+		enter(2);
+		shift(9);
+		SetConsoleTextAttribute(h, 4);
+		printf("%c ", 3);
+		printf("%c ", 3);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 15);
+		enter(4);
 		shift(6); cout << "       +---+\n";
 		shift(6); cout << "       |   |\n";
 		shift(6); cout << "           |\n";
@@ -27,7 +34,15 @@ void Hangman::PrintHangman()
 		shift(6); cout << "     =========\n\n";
 		break;
 	case 5:
-		enter(6);
+		enter(2);
+		shift(9);
+		SetConsoleTextAttribute(h, 4);
+		printf("%c ", 3);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 9);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 15);
+		enter(4);
 		shift(6); cout << "       +---+\n";
 		shift(6); cout << "       |   |\n";
 		shift(6); cout << "       0   |\n";
@@ -37,7 +52,15 @@ void Hangman::PrintHangman()
 		shift(6); cout << "     =========\n\n";
 		break;
 	case 4:
-		enter(6);
+		enter(2);
+		shift(9);
+		SetConsoleTextAttribute(h, 4);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 9);
+		printf("%c ", 3);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 15);
+		enter(4);
 		shift(6); cout << "       +---+\n";
 		shift(6); cout << "       |   |\n";
 		shift(6); cout << "       0   |\n";
@@ -47,7 +70,14 @@ void Hangman::PrintHangman()
 		shift(6); cout << "     =========\n\n";
 		break;
 	case 3:
-		enter(6);
+		enter(2);
+		shift(9);
+		SetConsoleTextAttribute(h, 9);
+		printf("%c ", 3);
+		printf("%c ", 3);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 15);
+		enter(4);
 		shift(6); cout << "       +---+\n";
 		shift(6); cout << "       |   |\n";
 		shift(6); cout << "       0   |\n";
@@ -57,7 +87,15 @@ void Hangman::PrintHangman()
 		shift(6); cout << "     =========\n\n";
 		break;
 	case 2:
-		enter(6);
+		enter(2);
+		shift(9);
+		SetConsoleTextAttribute(h, 9);
+		printf("%c ", 3);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 8);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 15);
+		enter(4);
 		shift(6); cout << "       +---+\n";
 		shift(6); cout << "       |   |\n";
 		shift(6); cout << "       0   |\n";
@@ -67,7 +105,15 @@ void Hangman::PrintHangman()
 		shift(6); cout << "     =========\n\n";
 		break;
 	case 1:
-		enter(6);
+		enter(2);
+		shift(9);
+		SetConsoleTextAttribute(h, 9);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 8);
+		printf("%c ", 3);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 15);
+		enter(4);
 		shift(6); cout << "       +---+\n";
 		shift(6); cout << "       |   |\n";
 		shift(6); cout << "       0   |\n";
@@ -77,7 +123,14 @@ void Hangman::PrintHangman()
 		shift(6); cout << "     =========\n\n";
 		break;
 	case 0:
-		enter(6);
+		enter(2);
+		shift(9);
+		SetConsoleTextAttribute(h, 8);
+		printf("%c ", 3);
+		printf("%c ", 3);
+		printf("%c ", 3);
+		SetConsoleTextAttribute(h, 15);
+		enter(4);
 		shift(6); cout << "       +---+\n";
 		shift(6); cout << "       |   |\n";
 		shift(6); cout << "       0   |\n";
