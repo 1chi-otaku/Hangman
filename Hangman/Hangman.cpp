@@ -365,7 +365,7 @@ int Hangman::SetDiffuclty()
 }
 void Hangman::GenerateWord()
 {
-	int random = rand() % 100;
+	int random = rand() % 151;
 	int i = 1;
 	fstream read(file, ios::in);
 	while (!read.eof())
@@ -478,6 +478,7 @@ void Hangman::Play()
 	if (lives == 0) {
 		system("cls");
 		PrintHangman();
+		cout << endl;
 		PrintWord();
 		system("pause");
 		auto t_end = std::chrono::high_resolution_clock::now();

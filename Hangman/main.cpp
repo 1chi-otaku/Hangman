@@ -65,9 +65,9 @@ void PrintMenu()
 	SetConsoleTextAttribute(m, 5);
 	shift(4); cout << "    #      / \\                                          " << endl;
 	SetConsoleTextAttribute(m, 4);
-	shift(4); cout << "    #             #  #  ##  # #      #   #  ##  # #      " << endl;
-	shift(4); cout << "    #             #### #__# #\\#      ## ## #__# #\\#    " << endl;
-	shift(4); cout << "    #             #  # #  # # #  ___ # # # #  # # #      " << endl;
+	shift(4); cout << "    #             #  #  ##  # #     #   #  ##  # #      " << endl;
+	shift(4); cout << "    #             #### #__# #\\#     ## ## #__# #\\#    " << endl;
+	shift(4); cout << "    #             #  # #  # # # ___ # # # #  # # #      " << endl;
 	SetConsoleTextAttribute(m, 8);
 	shift(4); cout << " ########                                                 " << endl;
 	shift(4); cout << " #      #                                                 " << endl << endl << endl;
