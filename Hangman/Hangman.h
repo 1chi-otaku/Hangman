@@ -26,7 +26,7 @@ public:
 	void PrintTried();
 	void PrintTime(int time_in_seconds);
 	void CalculatePoint(int time_in_seconds);
-	void GenerateWord();
+	int GenerateWord();
 	void Play();
 	void Reset();
 };

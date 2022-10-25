@@ -332,7 +332,7 @@ void Hangman::CalculatePoint(int time_in_seconds)
 	}
 }
 
-void Hangman::GenerateWord()
+int Hangman::GenerateWord()
 {
 	uint a;
 	string file;
@@ -340,6 +340,7 @@ void Hangman::GenerateWord()
 	cout << "1 - Easy" << endl;
 	cout << "2 - Medium" << endl;
 	cout << "3 - Hard" << endl;
+	cout << "4 - Custom" << endl;
 	cin >> a;
 
 	switch (a)
@@ -356,6 +357,11 @@ void Hangman::GenerateWord()
 		difficulty = Hard;
 		file = "hard.txt";
 		break;
+	case Custom:
+		difficulty = Custom;
+		cout << "Enter the word: " << endl;
+		cin >> Word;
+		return 0;
 	default:
 		difficulty = Hard;
 		file = "hard.txt";
@@ -373,6 +379,8 @@ void Hangman::GenerateWord()
 		i++;
 	}
 	read.close();
+
+	return 0;
 }
 
 
