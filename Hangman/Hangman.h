@@ -14,6 +14,7 @@ class Hangman
 	string Word;
 	string Guessed;
 	string Guessed_all;
+	string file;
 	uint lives = 6;
 	Message mess;
 	Difficulty difficulty = Custom;

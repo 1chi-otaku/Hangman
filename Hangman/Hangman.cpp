@@ -334,39 +334,43 @@ void Hangman::CalculatePoint(int time_in_seconds)
 
 int Hangman::GenerateWord()
 {
-	uint a;
-	string file;
-	cout << "Select difficulty : " << endl;
-	cout << "1 - Easy" << endl;
-	cout << "2 - Medium" << endl;
-	cout << "3 - Hard" << endl;
-	cout << "4 - Custom" << endl;
-	cin >> a;
+	if (difficulty == Custom) {
+		uint input;
+		cout << "Select difficulty : " << endl;
+		cout << "1 - Easy" << endl;
+		cout << "2 - Medium" << endl;
+		cout << "3 - Hard" << endl;
+		cout << "4 - Custom" << endl;
+		cin >> input;
 
-	switch (a)
-	{
-	case Easy:
-		difficulty = Easy;
-		file = "easy.txt";
-		break;
-	case Medium:
-		difficulty = Medium;
-		file = "medium.txt";
-		break;
-	case Hard:
-		difficulty = Hard;
-		file = "hard.txt";
-		break;
-	case Custom:
-		difficulty = Custom;
-		cout << "Enter the word: " << endl;
-		cin >> Word;
-		return 0;
-	default:
-		difficulty = Hard;
-		file = "hard.txt";
-		break;
+		switch (input)
+		{
+		case Easy:
+			difficulty = Easy;
+			file = "easy.txt";
+			break;
+		case Medium:
+			difficulty = Medium;
+			file = "medium.txt";
+			break;
+		case Hard:
+			difficulty = Hard;
+			file = "hard.txt";
+			break;
+		case Custom:
+			difficulty = Custom;
+			cout << "Enter the word: " << endl;
+			file = "";
+			cin >> Word;
+			return 0;
+		default:
+			difficulty = Hard;
+			file = "hard.txt";
+			break;
+		}
 	}
+	
+
 	int random = rand() % 100;
 	int i = 1;
 	fstream read(file, ios::in);

@@ -129,12 +129,10 @@
   <ItemGroup>
     <ClCompile Include="Hangman.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hangman.h" />
     <ClInclude Include="Message.h" />
-    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
