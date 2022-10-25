@@ -15,20 +15,23 @@ class Hangman
 	string Guessed;
 	string Guessed_all;
 	string file;
+
 	uint lives = 6;
-	Message mess;
 	Difficulty difficulty = Custom;
+
+	Message mess;
 	
 public:
 	Hangman();
 	Hangman(string word);
-	void PrintHangman();
-	bool PrintWord();
-	void PrintTried();
-	void PrintTime(int time_in_seconds);
+	void PrintHangman()const;
+	void PrintTried()const;
+	void PrintTime(int time_in_seconds)const;
 	void CalculatePoint(int time_in_seconds);
-	int GenerateWord();
+	void GenerateWord();
 	void Play();
 	void Reset();
+	int SetDiffuclty();
+	bool PrintWord()const;
 };
 

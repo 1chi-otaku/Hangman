@@ -23,7 +23,7 @@ public:
 	void AddStreak() {
 		streak++;
 	}
-	void Print() {
+	void Print()const {
 
 		HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 		if (streak == 0) {

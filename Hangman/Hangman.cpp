@@ -1,5 +1,4 @@
 #include "Hangman.h"
-#include <stack>
 #include <fstream>
 #include <Windows.h>
 #include <chrono>
@@ -13,7 +12,7 @@ Hangman::Hangman(string word)
 	difficulty = Custom;
 	Word = word;
 }
-void Hangman::PrintHangman()
+void Hangman::PrintHangman()const
 {
 	switch (lives)
 	{
@@ -142,21 +141,15 @@ void Hangman::PrintHangman()
 		shift(6); cout << "     YOU LOST!";
 		break;
 	default:
-		enter(6);
-		shift(6); cout << "            \n";
-		shift(6); cout << "            \n";
-		shift(6); cout << "            \n";
-		shift(6); cout << "            \n";
-		shift(6); cout << "            \n";
-		shift(6); cout << "            \n";
-		shift(6); cout << "            \n\n";
+
 		break;
+		
 	}
 	
 }
-bool Hangman::PrintWord()
-{
-	enter(1);
+bool Hangman::PrintWord()const
+{											
+	enter(1);						//Align a word in the console based on its length.
 	if (Word.size() <= 5) {
 		cout << "\b\b\b\b";
 	}
@@ -165,26 +158,28 @@ bool Hangman::PrintWord()
 	if (Word.size() < 10) {
 		shift(1);
 	}
-	if (Word.size() > 12) {
+	if (Word.size() > 12) {										
 		cout << "\b\b\b";
 	}
+
 	shift(4);
 	cout << "       ";
-	bool iss = false;
+
+	bool isGuesed = false;
 	bool notfull = true;
 	int j = 0;
 	for (int i = 0; i < Word.size(); i++)
 	{
-		iss = false;
+		isGuesed = false;
 		for (j = 0; j < Guessed.size(); j++)
 		{
 			if (Word[i] == Guessed[j]) {
-				iss = true;
+				isGuesed = true;
 				break;
 			}
 
 		}
-		if (iss) {
+		if (isGuesed) {
 			cout << " " << Guessed[j] << " ";
 		}
 		else {
@@ -196,7 +191,7 @@ bool Hangman::PrintWord()
 	cout << endl;
 	return notfull;
 }
-void Hangman::PrintTried()
+void Hangman::PrintTried()const
 {
 	for (int i = 0; i < Guessed_all.size(); i++)
 	{
@@ -216,7 +211,7 @@ void Hangman::PrintTried()
 	if(Guessed_all.size() != 0)cout << ".";
 	cout << endl;
 }
-void Hangman::PrintTime(int time_in_seconds)
+void Hangman::PrintTime(int time_in_seconds)const
 {
 	int sec = time_in_seconds, min = 0;
 	
@@ -228,7 +223,6 @@ void Hangman::PrintTime(int time_in_seconds)
 
 	cout << min << ":" << sec << endl;
 }
-
 void Hangman::CalculatePoint(int time_in_seconds)
 {
 	int time_bonus = 0,guessed_bonus, live_bonus;
@@ -331,46 +325,46 @@ void Hangman::CalculatePoint(int time_in_seconds)
 		SetConsoleTextAttribute(h, 15);
 	}
 }
-
-int Hangman::GenerateWord()
+int Hangman::SetDiffuclty()
 {
-	if (difficulty == Custom) {
-		uint input;
-		cout << "Select difficulty : " << endl;
-		cout << "1 - Easy" << endl;
-		cout << "2 - Medium" << endl;
-		cout << "3 - Hard" << endl;
-		cout << "4 - Custom" << endl;
-		cin >> input;
+	uint input;
+	cout << "Select difficulty : " << endl;
+	cout << "1 - Easy" << endl;
+	cout << "2 - Medium" << endl;
+	cout << "3 - Hard" << endl;
+	cout << "4 - Custom" << endl;
+	cin >> input;
 
-		switch (input)
-		{
-		case Easy:
-			difficulty = Easy;
-			file = "easy.txt";
-			break;
-		case Medium:
-			difficulty = Medium;
-			file = "medium.txt";
-			break;
-		case Hard:
-			difficulty = Hard;
-			file = "hard.txt";
-			break;
-		case Custom:
-			difficulty = Custom;
-			cout << "Enter the word: " << endl;
-			file = "";
-			cin >> Word;
-			return 0;
-		default:
-			difficulty = Hard;
-			file = "hard.txt";
-			break;
-		}
+	switch (input)
+	{
+	case Easy:
+		difficulty = Easy;
+		file = "easy.txt";
+		break;
+	case Medium:
+		difficulty = Medium;
+		file = "medium.txt";
+		break;
+	case Hard:
+		difficulty = Hard;
+		file = "hard.txt";
+		break;
+	case Custom:
+		difficulty = Custom;
+		cout << "Enter the word: " << endl;
+		file = "";
+		cin >> Word;
+		return 0;
+	default:
+		difficulty = Hard;
+		file = "hard.txt";
+		break;
 	}
 	
-
+	return 0;
+}
+void Hangman::GenerateWord()
+{
 	int random = rand() % 100;
 	int i = 1;
 	fstream read(file, ios::in);
@@ -383,14 +377,18 @@ int Hangman::GenerateWord()
 		i++;
 	}
 	read.close();
-
-	return 0;
 }
-
 
 void Hangman::Play()
 {
+	
 	Reset();
+
+	if (difficulty == Custom)
+		SetDiffuclty();
+	if (difficulty != Custom)
+		GenerateWord();
+
 
 	int elapsed_time_ms = 0;
 	bool isGuessed = false;
@@ -413,8 +411,6 @@ void Hangman::Play()
 			system("pause");
 			break;
 		}
-
-
 		system("cls");
 		PrintHangman();
 		PrintWord();
@@ -423,9 +419,6 @@ void Hangman::Play()
 		mess.Print();
 		cout << "Enter a letter or a word to guess: ";
 		cin >> current_guess;
-
-		
-		
 		if (Word == current_guess) {
 			Guessed = Word;
 			isGuessed = true;
@@ -486,12 +479,16 @@ void Hangman::Play()
 		
 	}
 	if (lives == 0) {
+		system("cls");
+		PrintHangman();
+		PrintWord();
+		system("pause");
 		auto t_end = std::chrono::high_resolution_clock::now();
 		elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
 	}
 	system("cls");
 	CalculatePoint((elapsed_time_ms/1000));
-	
+		
 }
 
 void Hangman::Reset()
