@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <iostream>
-
+#include "Message.h"
 #define shift(x) for (int i = 0; i < x; i++) { cout << "\t"; } //Макрос для табуляций
 #define enter(x) for(int i = 0; i < x; i++){cout << "\n";}  //Макрос для переноса строки
 
@@ -15,9 +15,9 @@ class Hangman
 	string Guessed;
 	string Guessed_all;
 	uint lives = 6;
+	Message mess;
 	Difficulty difficulty = Custom;
 	
-
 public:
 	Hangman();
 	Hangman(string word);
@@ -28,5 +28,6 @@ public:
 	void CalculatePoint(int time_in_seconds);
 	void GenerateWord();
 	void Play();
+	void Reset();
 };
 

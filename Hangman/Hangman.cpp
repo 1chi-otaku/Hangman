@@ -3,8 +3,9 @@
 #include <fstream>
 #include <Windows.h>
 #include <chrono>
-HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+#include "Message.h"
 
+HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 Hangman::Hangman() = default;
 
 Hangman::Hangman(string word)
@@ -153,12 +154,22 @@ void Hangman::PrintHangman()
 	}
 	
 }
-
 bool Hangman::PrintWord()
 {
 	enter(1);
-	shift(5);
-	cout << "        ";
+	if (Word.size() <= 5) {
+		cout << "\b\b\b\b";
+	}
+	if (Word.size() < 6)
+		shift(1);
+	if (Word.size() < 10) {
+		shift(1);
+	}
+	if (Word.size() > 12) {
+		cout << "\b\b\b";
+	}
+	shift(4);
+	cout << "       ";
 	bool iss = false;
 	bool notfull = true;
 	int j = 0;
@@ -181,13 +192,10 @@ bool Hangman::PrintWord()
 			cout << " _ ";
 		}
 		j = 0;
-		
-		
 	}
 	cout << endl;
 	return notfull;
 }
-
 void Hangman::PrintTried()
 {
 	for (int i = 0; i < Guessed_all.size(); i++)
@@ -208,7 +216,6 @@ void Hangman::PrintTried()
 	if(Guessed_all.size() != 0)cout << ".";
 	cout << endl;
 }
-
 void Hangman::PrintTime(int time_in_seconds)
 {
 	int sec = time_in_seconds, min = 0;
@@ -224,7 +231,6 @@ void Hangman::PrintTime(int time_in_seconds)
 
 void Hangman::CalculatePoint(int time_in_seconds)
 {
-
 	int time_bonus = 0,guessed_bonus, live_bonus;
 	if (lives != 0) {
 		if (time_in_seconds <= 15) time_bonus = 520;
@@ -257,7 +263,7 @@ void Hangman::CalculatePoint(int time_in_seconds)
 	shift(6);
 	int total = time_bonus + guessed_bonus + live_bonus;
 	cout << "  TOTAL  " << total << endl << endl;
-	Sleep(200);
+	Sleep(300);
 
 	if (total >= 1100) {
 		SetConsoleTextAttribute(h, 14);
@@ -317,15 +323,13 @@ void Hangman::CalculatePoint(int time_in_seconds)
 		shift(6); cout << "    #             " << endl;
 		shift(6); cout << "    #           " << endl;
 		shift(6); cout << "    #            " << endl;
-		shift(6); cout << "    ##########    " << endl;
+		shift(6); cout << "    #########    " << endl;
 		shift(6); cout << "    #            " << endl;
 		shift(6); cout << "    #           " << endl;
 		shift(6); cout << "    #            " << endl;
-		shift(6); cout << "    ##########  " << endl;
+		shift(6); cout << "    ##########            " << endl;
 		SetConsoleTextAttribute(h, 15);
 	}
-
-
 }
 
 void Hangman::GenerateWord()
@@ -374,18 +378,13 @@ void Hangman::GenerateWord()
 
 void Hangman::Play()
 {
-	Word.clear();
-	Guessed.clear();
-	Guessed_all.clear();
-	GenerateWord();
-	lives = 6;
-
+	Reset();
 
 	int elapsed_time_ms = 0;
 	bool isGuessed = false;
 	string current_guess;
-	string message;
 	auto t_start = std::chrono::high_resolution_clock::now();
+
 	while (lives != 0 && isGuessed != true)
 	{ 
 		if (PrintWord()) {
@@ -409,8 +408,7 @@ void Hangman::Play()
 		PrintWord();
 		PrintTried();
 		shift(5);
-		cout << "   " << message << endl;
-		message = "";
+		mess.Print();
 		cout << "Enter a letter or a word to guess: ";
 		cin >> current_guess;
 
@@ -437,9 +435,8 @@ void Hangman::Play()
 			for (int i = 0; i < Guessed.size(); i++)
 			{
 				if (current_guess[0] == Guessed[i]) {
-					message = "You've guessed this letter already.";
+					mess.SetMessage("You've guessed this letter already.");
 					isGuessedLetter = true;
-					break;
 				}
 			}
 			if (!isGuessedLetter) {
@@ -447,32 +444,50 @@ void Hangman::Play()
 				{
 					if (current_guess[0] == Guessed_all[i]) {
 						isTriedLetter = true;
-						message = "You've tried this letter already.";
+						mess.SetMessage("You've tried this letter already.");
 					}
 				}
-				if (!isTriedLetter) {
+				if (!isTriedLetter && !isGuessedLetter) {
 					Guessed_all += current_guess;
 				}
 			}
-	
+
 			for (int i = 0; i < Word.size(); i++)
 			{
-				if (Word[i] == current_guess[0]) {
+				if (Word[i] == current_guess[0] && !isTriedLetter && !isGuessedLetter) {
+					mess.AddStreak();
 					Guessed += current_guess;
 					temp = true;
 					break;
 				}
-				
+
 			}
-			if (temp == false && !isTriedLetter)lives--;
+			if (temp == false && !isTriedLetter && !isGuessedLetter) {
+				lives--;
+				mess.SetMessage("");
+			}
 		}
 		else {
-			message = "Wrong input";
+			mess.SetMessage("Wrong Input");
 			lives--;
 		}
 		
 	}
+	if (lives == 0) {
+		auto t_end = std::chrono::high_resolution_clock::now();
+		elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
+	}
 	system("cls");
 	CalculatePoint((elapsed_time_ms/1000));
 	
+}
+
+void Hangman::Reset()
+{
+	Word.clear();
+	Guessed.clear();
+	Guessed_all.clear();
+	GenerateWord();
+	lives = 6;
+	mess.Clear();
 }
