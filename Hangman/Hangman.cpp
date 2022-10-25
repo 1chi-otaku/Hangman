@@ -381,21 +381,18 @@ void Hangman::GenerateWord()
 
 void Hangman::Play()
 {
-	
 	Reset();
-
 	if (difficulty == Custom)
 		SetDiffuclty();
 	if (difficulty != Custom)
 		GenerateWord();
-
 
 	int elapsed_time_ms = 0;
 	bool isGuessed = false;
 	string current_guess;
 	auto t_start = std::chrono::high_resolution_clock::now();
 
-	while (lives != 0 && isGuessed != true)
+	while (lives != 0)
 	{ 
 		if (PrintWord()) {
 			system("cls");

@@ -1,14 +1,11 @@
 ﻿#include <iostream>
-#include <conio.h>
 #include <Windows.h>
 #include "Hangman.h"
-
-
 using namespace std;
 
+HANDLE m = GetStdHandle(STD_OUTPUT_HANDLE);
 
 void PrintMenu();
-
 
 int main() {
 	srand(time(NULL));
@@ -56,15 +53,25 @@ int main() {
 void PrintMenu()
 {
 	system("cls");
+	SetConsoleTextAttribute(m, 4);
 	shift(4); cout << "                                                         " << endl;
 	shift(4); cout << "    #########                                            " << endl;
+	SetConsoleTextAttribute(m, 2);
 	shift(4); cout << "    #       #                                            " << endl;
+	SetConsoleTextAttribute(m, 6);
 	shift(4); cout << "    #       0                                            " << endl;
+	SetConsoleTextAttribute(m, 1);
 	shift(4); cout << "    #      /|\\                                          " << endl;
+	SetConsoleTextAttribute(m, 5);
 	shift(4); cout << "    #      / \\                                          " << endl;
+	SetConsoleTextAttribute(m, 4);
 	shift(4); cout << "    #             #  #  ##  # #      #   #  ##  # #      " << endl;
 	shift(4); cout << "    #             #### #__# #\\#      ## ## #__# #\\#    " << endl;
-	shift(4); cout << " #######          #  # #  # # #  ___ # # # #  # # #      " << endl << endl << endl;
+	shift(4); cout << "    #             #  # #  # # #  ___ # # # #  # # #      " << endl;
+	SetConsoleTextAttribute(m, 8);
+	shift(4); cout << " ########                                                 " << endl;
+	shift(4); cout << " #      #                                                 " << endl << endl << endl;
+	SetConsoleTextAttribute(m, 15);
 
 	shift(6); cout << "1. Play" << endl;
 	shift(6); cout << "2. Choose difficulty" << endl;
