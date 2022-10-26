@@ -188,7 +188,7 @@ bool Hangman::PrintWord()const
 		j = 0;
 	}
 	cout << endl;
-	return notfull;
+	return notfull;   //!!! returns true if the word is complete.
 }
 void Hangman::PrintTried()const
 {
@@ -225,6 +225,7 @@ void Hangman::PrintTime(int time_in_seconds)const
 void Hangman::CalculatePoint(int time_in_seconds)
 {
 	int time_bonus = 0,guessed_bonus, live_bonus;
+	//Calculates time bonus depending on time player was struggling with word.
 	if (lives != 0) {
 		if (time_in_seconds <= 15) time_bonus = 520;
 		else if (time_in_seconds <= 20) time_bonus = 400;
@@ -233,14 +234,16 @@ void Hangman::CalculatePoint(int time_in_seconds)
 		else if (time_in_seconds <= 60) time_bonus = 70;
 	}
 	
-	guessed_bonus = Guessed.size() * 50;
-	live_bonus = lives * 30;
+	
+	guessed_bonus = Guessed.size() * 50;					//Bonus for word difficultie is Guessed size * 50.
+	live_bonus = lives * 30;								//Bonus for lives is lives * 30.
 
-	cout << "Time - "; PrintTime(time_in_seconds);
+	//Prints the statistics.
+	cout << "Time - "; PrintTime(time_in_seconds);			//PrintTime formats raw seconds to:  0:00 and prints it.
 	cout << "Word - " << Word << endl;
 	cout << "Tries - " << Guessed_all.size() << endl;
 	cout << "Lives - " << lives << endl;
-	PrintTried();
+	PrintTried();								
 	enter(5);
 	Sleep(200);
 	shift(6);
@@ -258,6 +261,7 @@ void Hangman::CalculatePoint(int time_in_seconds)
 	cout << "  TOTAL  " << total << endl << endl;
 	Sleep(300);
 
+	//Prints rang depending on total score.
 	if (total >= 1100) {
 		SetConsoleTextAttribute(h, 14);
 		shift(6); cout << "     ##########   " << endl;
