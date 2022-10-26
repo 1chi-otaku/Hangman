@@ -4,7 +4,7 @@
 #include <chrono>
 #include "Message.h"
 
-HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);			//windows.h library. for changing colours.
 Hangman::Hangman() = default;
 
 Hangman::Hangman(string word)

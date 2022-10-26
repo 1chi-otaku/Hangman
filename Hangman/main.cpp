@@ -28,7 +28,7 @@ int main() {
 			{
 				obj.Play();
 				cout << "Play Again?" << endl;
-				cout << "Any key - YES" << endl;
+				cout << "1 - YES" << endl;
 				cout << "2 - NO" << endl;
 				cin >> input;
 				system("cls");
