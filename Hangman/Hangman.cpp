@@ -145,7 +145,6 @@ void Hangman::PrintHangman()const
 		break;
 		
 	}
-	
 }
 bool Hangman::PrintWord()const
 {											
@@ -365,133 +364,131 @@ int Hangman::SetDiffuclty()
 }
 void Hangman::GenerateWord()
 {
-	int random = rand() % 151;
-	int i = 1;
-	fstream read(file, ios::in);
+	int random = rand() % 151;								//Each file contains exactly 150 words, so i considered there is no reason to calculate amount of words in file with cycle.
+	int i = 1;												//Sets an itterator to i to check if the random value and i matches.
+	fstream read(file, ios::in);							//Opens file for reading.
 	while (!read.eof())
 	{
-		read >> Word;
-		if (i == random) {
+		read >> Word;										//Reads a word to Word field.
+		if (i == random) {									//If a random value matches with i, breaks.
 			break;
 		}
 		i++;
 	}
-	read.close();
+	read.close();											//Closes the file.
 }
 
 void Hangman::Play()
 {
-	Reset();
-	if (difficulty == Custom)
-		SetDiffuclty();
-	if (difficulty != Custom)
+	Reset();																				//Resets stats of player to start a new game.
+
+	if (difficulty == Custom)																//If difficulty is custom, request a change in difficulty.
+		SetDiffuclty();	
+	if (difficulty != Custom)																//If difficulty is custom, the word won't be generated automatically so player can play with his word.
 		GenerateWord();
 
-	int elapsed_time_ms = 0;
-	bool isGuessed = false;
-	string current_guess;
-	auto t_start = std::chrono::high_resolution_clock::now();
+	int elapsed_time_ms = 0;																//Variable for elapsed time in ms to use the chrono library, which counts time.
+	bool isGuessed = false;																	//Bool variable that defines whether the word is guessed or not.
+	string current_guess;																	//String val. to input guess. String value can provide an opportunity to input by one letter or full word.
+	auto t_start = std::chrono::high_resolution_clock::now();			//t_start is a var from <chrono> library, using method now of class high_resolution_clock, we start counting from this point in time.
 
-	while (lives != 0)
+	while (lives != 0)																		//The game begins until lives > 0
 	{ 
-		if (PrintWord()) {
+		if (PrintWord()) {																	//PrintWord() returns true only if the entire word is guessed. In this case, the game ends with the player's victory.
 			system("cls");
-			Guessed = Word;
-			isGuessed = true;
 			PrintHangman();
 			PrintWord();
 			shift(5);
-			cout << "YOU WIN!" << endl;
-			auto t_end = std::chrono::high_resolution_clock::now();
-			elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
+			cout << "YOU WON!" << endl;
+			auto t_end = std::chrono::high_resolution_clock::now();			//t_end is a var from <chrono> library, using method now of class high_resolution_clock, we stoped counting from this point in time.
+			elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();   //Subtracts the start time from the end of time and returns it in milliseconds.
+			system("pause");
+			break;
+		}
+
+		system("cls");
+		PrintHangman();																		//Prints the game field after the player's guess if the game is still in proccess.
+		PrintWord();
+		PrintTried();
+
+		shift(5);
+		mess.Print();																		//Prints, depending on the success of the player, either inspiring or erroneous messages.
+		cout << "Enter a letter or a word to guess: ";
+		cin >> current_guess;																//Guess input.
+		if (Word == current_guess) {														//If current_guess contains search word, player gains a victory.
+			isGuessed = true;
+			Guessed = Word;																	
+			system("cls");
+			PrintHangman();
+			PrintWord();
+			shift(5);
+			cout << "YOU WON!" << endl; 
+			auto t_end = std::chrono::high_resolution_clock::now();          //t_end is a var from <chrono> library, using method now of class high_resolution_clock, we stoped counting from this point in time.
+			elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();   //Subtracts the start time from the end of time and returns it in milliseconds.
 			shift(5);
 			system("pause");
 			break;
 		}
-		system("cls");
-		PrintHangman();
-		PrintWord();
-		PrintTried();
-		shift(5);
-		mess.Print();
-		cout << "Enter a letter or a word to guess: ";
-		cin >> current_guess;
-		if (Word == current_guess) {
-			Guessed = Word;
-			isGuessed = true;
-			system("cls");
-			PrintHangman();
-			PrintWord();
-			shift(5);
-			cout << "YOU WIN!" << endl;
-			auto t_end = std::chrono::high_resolution_clock::now();
-			elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
-			shift(5);
-			system("pause");
-		}
-		else if (current_guess.size() == 1) {
-			bool temp = false;
-			bool isGuessedLetter = false;
-			bool isTriedLetter = false;
+		else if (current_guess.size() == 1) {														//If input contains only 1 symbol.
+			bool isSuccessLetter = false;															//Returns true, if the letter is not repeated and it is contained in the word.
+			bool isGuessedLetter = false;															//Returns true, if the letter is repeated and it is contained in the word.
+			bool isTriedLetter = false;																//Returns true, if the letter is repeated and it is not contained in the word.
 
-			for (int i = 0; i < Guessed.size(); i++)
+			for (int i = 0; i < Guessed.size(); i++)												//Checks if the letter is already guessed.
 			{
-				if (current_guess[0] == Guessed[i]) {
-					mess.SetMessage("You've guessed this letter already.");
-					isGuessedLetter = true;
+				if (current_guess[0] == Guessed[i]) {												//If the first element of guess is equal to Guessed string[i]:
+					mess.SetMessage("You've guessed this letter already.");				//Puts a respective message in class Message.
+					isGuessedLetter = true;															//Sets isGuessedLetter to true.
 				}
 			}
-			if (!isGuessedLetter) {
-				for (int i = 0; i < Guessed_all.size(); i++)
+			if (!isGuessedLetter) {																	//If the guessed letter is not equal to Guessed letters:
+				for (int i = 0; i < Guessed_all.size(); i++)										//Checks if the letter contains in all the letter player tried.
 				{
-					if (current_guess[0] == Guessed_all[i]) {
-						isTriedLetter = true;
-						mess.SetMessage("You've tried this letter already.");
+					if (current_guess[0] == Guessed_all[i]) {										//If the first element of guess if equal to Guessed_all element.
+						isTriedLetter = true;														//Sets isTriedLetter to true.
+						mess.SetMessage("You've tried this letter already.");				//Puts a respective message in class Message.
 					}
 				}
-				if (!isTriedLetter && !isGuessedLetter) {
-					Guessed_all += current_guess;
+				if (!isTriedLetter && !isGuessedLetter) {											//If the letter is not contained in any of the guessed or tried strings - arrays:
+					Guessed_all += current_guess;													//Puts a current guess to a string array with all tried letters.
 				}
 			}
-
-			for (int i = 0; i < Word.size(); i++)
+			for (int i = 0; i < Word.size(); i++)													//Checks if the letter is not repeated and if it matches with letter in search word.
 			{
-				if (Word[i] == current_guess[0] && !isTriedLetter && !isGuessedLetter) {
-					mess.AddStreak();
-					Guessed += current_guess;
-					temp = true;
+				if (Word[i] == current_guess[0] && !isTriedLetter && !isGuessedLetter) {			//If it matches, player guessed a new letter.
+					mess.AddStreak();																//Adds streak to print an inspiring message to player.
+					Guessed += current_guess;														//Adds a current guess to all the guessed string.
+					isSuccessLetter = true;															//Sets is SuccessLetter to trie.
 					break;
 				}
-
 			}
-			if (temp == false && !isTriedLetter && !isGuessedLetter) {
-				lives--;
-				mess.SetMessage("");
+			if (isSuccessLetter == false && !isTriedLetter && !isGuessedLetter) {					//If the current attempt isn't successful, and the current letter does not repeat with the guessed and attempts, then the player guessed the wrong letter.
+				lives--;																			//Decrements lives.
+				mess.SetMessage("");												     	//Puts a respective message in class Message.
 			}
 		}
 		else {
-			mess.SetMessage("Wrong Input");
-			lives--;
+			mess.SetMessage("Wrong Input");												//If the input isn't the search words, and size of inputr is > 1 or 1<, it means plater wrote the wrong input. Puts a respective message in a Message class.
+			lives--;																				//Decrements lives.
 		}
 		
 	}
-	if (lives == 0) {
+	if (lives == 0) {																				//Checks lives is 0, which means the player lost.
 		system("cls");
-		PrintHangman();
+		PrintHangman();																				//Prints a dead hangman.
 		cout << endl;
-		PrintWord();
+		PrintWord();																				//Prints a current guessed word.
 		system("pause");
-		auto t_end = std::chrono::high_resolution_clock::now();
-		elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
+		auto t_end = std::chrono::high_resolution_clock::now();				//t_end is a var from <chrono> library, using method now of class high_resolution_clock, we stoped counting from this point in time.
+		elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();		//Subtracts the start time from the end of time and returns it in milliseconds.
 	}
 	system("cls");
-	CalculatePoint((elapsed_time_ms/1000));
+	CalculatePoint((elapsed_time_ms/1000));											// Passes the elapsed time in (ms / 1000) to the CalculatePoints method, thus passing how long the player guessed the word in seconds. Method CalcilatePoint() calculates how many points player got and prints his rank.
 		
 }
-
-void Hangman::Reset()
+void Hangman::Reset() //Resets stats of player to start a new game.
 {
-	Word.clear();
+	Word.clear();				
 	Guessed.clear();
 	Guessed_all.clear();
 	GenerateWord();

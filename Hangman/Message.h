@@ -5,8 +5,8 @@
 using namespace std;
 
 class Message{
-	string message;
-	unsigned int streak;
+	string message;										//Message itself.
+	unsigned int streak;								//Depending on current streak, prints inspiring messages.
 public:
 	Message() {
 		message = "";
@@ -59,7 +59,5 @@ public:
 		message = "";
 		streak = 0;
 	}
-	
-
 };
 
