@@ -402,8 +402,8 @@ void Hangman::Play()
 			system("cls");
 			PrintHangman();
 			PrintWord();
-			shift(5);
-			cout << "YOU WON!" << endl;
+			shift(6);
+			cout << "      YOU WON!" << endl;
 			auto t_end = std::chrono::high_resolution_clock::now();			//t_end is a var from <chrono> library, using method now of class high_resolution_clock, we stoped counting from this point in time.
 			elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();   //Subtracts the start time from the end of time and returns it in milliseconds.
 			system("pause");

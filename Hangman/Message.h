@@ -20,11 +20,11 @@ public:
 		message = new_message;
 		streak = 0;
 	}
-	void AddStreak() {
+	void AddStreak() {									//streak incriment.
 		streak++;
-	}
+	}							
 	void Print()const {
-
+		//Prints a message if the guess is correct and makes it even more cheer with streak.
 		HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 		if (streak == 0) {
 			cout << message << endl;
